@@ -3,8 +3,7 @@
 	require_once("config.php");
 	
 	// Establish mysql connection.
-	$db = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-	$db->set_charset('utf8mb4');
+	$db = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4", DB_USER, DB_PASSWORD);
 
 	// Error connecting to db.
 	if ($db->connect_errno) {
@@ -22,8 +21,8 @@
 	}
 	
 	$rows = array();
-	while($gyms = $result->fetch_assoc()) {
-		$rows[] = $gyms;
+	while($gym = $result->fetch(PDO::FETCH_ASSOC)) {
+		$rows[] = $gym;
 	}
 	
 	print json_encode($rows);
