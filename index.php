@@ -1,3 +1,5 @@
+<?php require_once('./config.php'); ?>
+	
 <html>
 	<head>
 		<meta charset="utf-8" />
@@ -30,11 +32,10 @@
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script type="text/javascript">
 		
-			//Configure these variables for your setup
-			var defaultCentre = new L.LatLng(51.9204595, 4.3406484); //Default starting location of map.
-			var mapToken = 'mapbox_token_here'; //Your MapBox token
-			var autoLocate = false; //Automatically centre map on user's location (can give error on some browsers if not using https)
-			var exIdentifier = '[EX'; //Something added to the gym name to identify gyms as EX Gyms
+			var defaultCentre = new L.LatLng(<?php echo(MAP_CENTRE); ?>); 
+			var mapToken = '<?php echo(MAP_TOKEN); ?>'; 
+			var autoLocate = <?php echo(MAP_AUTOLOCATE); ?>; 
+			var exIdentifier = '<?php echo(MAP_EX_IDENT); ?>';
 		
 			var map, tiles, darkTiles, outdoorsTiles, satelliteTiles, raids1, raids2, raids3, raids4, raids5, raidsX, gyms, gymsEX;
 			var firstLoad=true;
@@ -136,8 +137,16 @@
 					"Level 3": raids3,
 					"Level 2": raids2,
 					"Level 1": raids1,
-					"EX Gyms": gymsEX,
-					"Other Gyms": gyms
+					<?php 
+						if (MAP_SHOW_GYMS) {
+							if (MAP_EX_IDENT != 'none') { 
+								echo('"EX Gyms": gymsEX,
+								"Other Gyms": gyms');
+							} else {
+								echo('"Gyms": gyms'); 
+							}
+						}
+					?>
 				};
 				
 				L.control.layers(baseMap, overlayMaps, {hideSingleBase: true}).addTo(map);
@@ -156,7 +165,7 @@
 				//Clear map, get latest data and set timer to update again in 60 seconds.
 				if(firstLoad) {
 					firstLoad = false;
-					getGyms();
+					<?php if(MAP_SHOW_GYMS) { echo ('getGyms();'); } ?>
 				}
 				raids1.clearLayers();
 				raids2.clearLayers();
@@ -217,7 +226,7 @@
 						if (pokedex_id == 9995) {
 							var marker = new L.Marker(location, {icon: new eggIcon({iconUrl: 'icons/egg_L5.png' })}, { title: name });
 						} else {
-							pokemonIcon[i] = new raidIcon({iconUrl: 'icons/id_' + pokedex_id +'.png'})
+							pokemonIcon[i] = new raidIcon({iconUrl: 'icons<?php echo("/" . MAP_ICONPACK); ?>/id_' + pokedex_id +'.png'})
 							var marker = new L.Marker(location, {icon: pokemonIcon[i] }, { title: name });
 						}
 						marker.bindPopup(details, {maxWidth: '400'});
@@ -226,7 +235,7 @@
 						if (pokedex_id == 9994) {
 							var marker = new L.Marker(location, {icon: new eggIcon({iconUrl: 'icons/egg_L4.png' })}, { title: name });	
 						} else {
-							pokemonIcon[i] = new raidIcon({iconUrl: 'icons/id_' + pokedex_id +'.png'})
+							pokemonIcon[i] = new raidIcon({iconUrl: 'icons<?php echo("/" . MAP_ICONPACK); ?>/id_' + pokedex_id +'.png'})
 							var marker = new L.Marker(location, {icon: pokemonIcon[i] }, { title: name });
 						}
 						marker.bindPopup(details, {maxWidth: '400'});
@@ -235,7 +244,7 @@
 						if (pokedex_id == 9993) {
 							var marker = new L.Marker(location, {icon: new eggIcon({iconUrl: 'icons/egg_L3.png' })}, { title: name });	
 						} else {
-							pokemonIcon[i] = new raidIcon({iconUrl: 'icons/id_' + pokedex_id +'.png'})
+							pokemonIcon[i] = new raidIcon({iconUrl: 'icons<?php echo("/" . MAP_ICONPACK); ?>/id_' + pokedex_id +'.png'})
 							var marker = new L.Marker(location, {icon: pokemonIcon[i] }, { title: name });
 						}
 						marker.bindPopup(details, {maxWidth: '400'});
@@ -244,7 +253,7 @@
 						if (pokedex_id == 9992) {
 							var marker = new L.Marker(location, {icon: new eggIcon({iconUrl: 'icons/egg_L2.png' })}, { title: name });	
 						} else {
-							pokemonIcon[i] = new raidIcon({iconUrl: 'icons/id_' + pokedex_id +'.png'})
+							pokemonIcon[i] = new raidIcon({iconUrl: 'icons<?php echo("/" . MAP_ICONPACK); ?>/id_' + pokedex_id +'.png'})
 							var marker = new L.Marker(location, {icon: pokemonIcon[i] }, { title: name });
 						}
 						marker.bindPopup(details, {maxWidth: '400'});
@@ -253,7 +262,7 @@
 						if (pokedex_id == 9991) {
 							var marker = new L.Marker(location, {icon: new eggIcon({iconUrl: 'icons/egg_L1.png' })}, { title: name });	
 						} else {
-							pokemonIcon[i] = new raidIcon({iconUrl: 'icons/id_' + pokedex_id +'.png'})
+							pokemonIcon[i] = new raidIcon({iconUrl: 'icons<?php echo("/" . MAP_ICONPACK); ?>/id_' + pokedex_id +'.png'})
 							var marker = new L.Marker(location, {icon: pokemonIcon[i] }, { title: name });
 						}
 						marker.bindPopup(details, {maxWidth: '400'});
@@ -263,7 +272,7 @@
 						if (remaining > 44) {
 							var marker = new L.Marker(location, {icon: new eggIcon({iconUrl: 'icons/egg_X.png' })}, { title: name });	
 						} else {
-							pokemonIcon[i] = new raidIcon({iconUrl: 'icons/id_' + pokedex_id +'.png'})
+							pokemonIcon[i] = new raidIcon({iconUrl: 'icons<?php echo("/" . MAP_ICONPACK); ?>/id_' + pokedex_id +'.png'})
 							var marker = new L.Marker(location, {icon: pokemonIcon[i] }, { title: name });
 						}
 						marker.bindPopup(details, {maxWidth: '400'});
@@ -280,7 +289,7 @@
 						var location = new L.LatLng(data[i].lat, data[i].lon),
 							gym_name = data[i].gym_name,
 							address = data[i].address;
-							if(gym_name.indexOf('[EX') !== -1) {
+							if(gym_name.indexOf('<?php echo(MAP_EX_IDENT); ?>') !== -1) {
 								//Is EX Gym
 								var EX=true;
 							} else { 
@@ -294,7 +303,7 @@
 						
 						var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ gym_info + no_raids + "</div>";
 						
-						if(EX) {
+						if(exIdentifier != "none" && EX) {
 							var marker = new L.Marker(location, {icon: exGymIcon}, { title: name });
 							marker.bindPopup(details, {maxWidth: '400'});
 							gymsEX.addLayer(marker);
