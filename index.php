@@ -138,7 +138,7 @@
 					"Level 3": raids3,
 					"Level 2": raids2,
 					"Level 1": raids1,
-					"BETA Quest": quest,
+					"Quest": quest,
 					<?php 
 						if (MAP_SHOW_GYMS) {
 							if (MAP_EX_IDENT != 'none') { 
@@ -348,12 +348,12 @@
 						
 						pokestop_info += "<div style='font-size: 12px;'><a href='https://www.google.com/maps/search/?api=1&query=" + data['stops'][i].lat + "," + data['stops'][i].lon + "' target='_blank' title='Click to find " + pokestop_name + " on Google Maps'>" + address + "</a></div>&nbsp;<br />";
 						
-						var q_type      = data['translations']['quest_type_' + quest_type].NL,
-						    dat_action  = data['translations']['quest_action_' + quest_action].NL;
+						var q_type      = data['translations']['quest_type_' + quest_type].<?php echo LANGUAGE; ?>,
+						    dat_action  = data['translations']['quest_action_' + quest_action].<?php echo LANGUAGE; ?>;
 						    arr_action  = dat_action.split(':');
 						    q_action    = ( ( quest_quantity == 1 ) ? arr_action[0] : arr_action[1] );
 						    
-						var r_type      = data['translations']['reward_type_' + reward_type].NL;
+						var r_type      = data['translations']['reward_type_' + reward_type].<?php echo LANGUAGE; ?>;
 						    dat_r_type  = r_type.split(':');
 						    r_type      = ( ( reward_quantity == 1 ) ? dat_r_type[0] : dat_r_type[1] );
 						
