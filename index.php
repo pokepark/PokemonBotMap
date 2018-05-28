@@ -138,7 +138,7 @@
 					"Level 3": raids3,
 					"Level 2": raids2,
 					"Level 1": raids1,
-					"BETA Quest": quest,
+					"Quest": quest,
 					<?php 
 						if (MAP_SHOW_GYMS) {
 							if (MAP_EX_IDENT != 'none') { 
