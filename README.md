@@ -3,7 +3,7 @@
 This is an add on for the Raid and Quest bot.
 It will extract the data out the database and put in an map.
 
-## configuration
+## Configuration
 Copy config.php.example to config.php and edit.
 Enter the details for the database connection to the config.php file.
 
