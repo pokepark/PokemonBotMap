@@ -39,7 +39,7 @@
         ORDER BY   pokestops.pokestop_name
 	";
 
-	$json           = file_get_contents( 'quests-rewards.json');
+	$json           = file_get_contents( LOCATION_QUEST_REWARD_JSON);
 	$translations   = json_decode($json,true);
 
 	$result = $db->query($sql);

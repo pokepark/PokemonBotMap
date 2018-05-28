@@ -14,5 +14,6 @@ define('MAP_AUTOLOCATE', true); //Automatically centre map on user's location (c
 define('MAP_EX_IDENT',	'none'); //Do you have anything added to gym name to indicate it's an EX gym (E.g. *** or [EX]), leave as 'none' if you don't use this
 define('MAP_SHOW_GYMS',	 true); //Enable optional gym layers on the map to show all gyms / EX gyms (if gyms are tagged with an identifier)
 define('MAP_ICONPACK',	'numbers'); //Choose icons for the map - add folders of icons named id_x.png and set folder name here to switch icon pack
-
+define('LANGUAGE',  'EN'); // set the language to NL,DE,EN,PT-BR.
+define('LOCATION_QUEST_REWARD_JSON', '../raidbot/quests-rewards.json'); //select the folder where the quest-reward.json is located.
 ?>
