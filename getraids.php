@@ -28,7 +28,7 @@
 		LEFT JOIN pokemon ON pokemon.pokedex_id=raids.pokemon
 		LEFT JOIN attendance ON attendance.raid_id=raids.id
 	WHERE   raids.end_time > NOW()
-		AND 	raids.end_time < NOW() + INTERVAL 18 hour
+		AND 	raids.end_time < NOW() + INTERVAL 96 hour
 	GROUP BY  raids.gym_name
 	ORDER BY  raids.end_time ASC";
 
