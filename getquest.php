@@ -3,7 +3,7 @@
 	require_once("config.php");
 	
 	// Establish mysql connection.
-	$db = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4", DB_USER, DB_PASSWORD);
+	$db = new PDO("mysql:host=" . QUEST_DB_HOST . ";dbname=" . QUEST_DB_NAME . ";charset=utf8mb4", QUEST_DB_USER, QUEST_DB_PASSWORD);
 
 	// Error connecting to db.
 	if ($db->connect_errno) {
@@ -39,7 +39,7 @@
         ORDER BY   pokestops.pokestop_name
 	";
 
-	$json           = file_get_contents( LOCATION_QUEST_REWARD_JSON);
+	$json           = file_get_contents(LOCATION_QUEST_REWARD_JSON);
 	$translations   = json_decode($json,true);
 
 	$result = $db->query($sql);
