@@ -1,5 +1,5 @@
 <?php
-//DB connection details - same details as raidbot
+//Database connection details for raids
 define('DB_HOST',			'localhost');
 define('DB_NAME',			'your_database_name');
 define('DB_USER',			'your_database_user');
@@ -15,5 +15,17 @@ define('MAP_EX_IDENT',	'none'); //Do you have anything added to gym name to indi
 define('MAP_SHOW_GYMS',	 true); //Enable optional gym layers on the map to show all gyms / EX gyms (if gyms are tagged with an identifier)
 define('MAP_ICONPACK',	'numbers'); //Choose icons for the map - add folders of icons named id_x.png and set folder name here to switch icon pack
 define('LANGUAGE',  'EN'); // set the language to NL,DE,EN,PT-BR.
-define('LOCATION_QUEST_REWARD_JSON', '../raidbot/quests-rewards.json'); //select the folder where the quest-reward.json is located.
+
+
+//Quests - Optional settings for adding QuestBot data to your map
+define('MAP_SHOW_QUESTS', false);  //set to true to offer quest data on the map from your QuestBot.
+define('LOCATION_QUEST_REWARD_JSON', 'https://your-bot-url.com/questbot/quests-rewards.json'); //select the folder where the quest-reward.json is located.
+
+//Database connection details for quests
+define('QUEST_DB_HOST',	 		'localhost');
+define('QUEST_DB_NAME',         'your_database_name');
+define('QUEST_DB_USER',         'your_database_user');
+define('QUEST_DB_PASSWORD',     'your_database_password');
+
+
 ?>

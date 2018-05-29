@@ -69,9 +69,30 @@
 				iconAnchor:   [10, 17], 
 				popupAnchor:  [-3, -10],	
 				iconUrl: 'icons/gymEX.png'
-			});			
+			});
+
+			var questPokeIcon = L.Icon.extend({
+				options: {
+					iconSize:     [32, 32],
+					iconAnchor:   [8, 8],
+					popupAnchor:  [-3, -10],
+					shadowUrl: 'icons/quests/pokestop.png',
+					shadowSize:   [48, 48],
+					shadowAnchor: [24, 24]
+				}
+			});
+
+			var questItemIcon = L.Icon.extend({
+				options: {
+					iconSize:     [32, 32],
+					iconAnchor:   [8, 8],
+					popupAnchor:  [-3, -10],
+					shadowUrl: 'icons/quests/pokestop.png',		
+					shadowSize:   [48, 48],
+					shadowAnchor: [24, 24]					
+				}
+			});		
 			
-		
 			(function () {
 				//Separate layers for raid levels to allow toggle on/off of levels
 				gyms = new L.FeatureGroup();
@@ -138,8 +159,12 @@
 					"Level 3": raids3,
 					"Level 2": raids2,
 					"Level 1": raids1,
-					"Quest": quest,
 					<?php 
+						if (MAP_SHOW_QUESTS) {
+							echo('"Quests": quest,
+								'); 
+						}
+					
 						if (MAP_SHOW_GYMS) {
 							if (MAP_EX_IDENT != 'none') { 
 								echo('"EX Gyms": gymsEX,
@@ -362,9 +387,9 @@
 						var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ pokestop_info  + quest_info + "</div>";	
 						
 						if( pokedex_id && reward_type == 1 ){
-						    pokemonIcon[i] = new raidIcon({iconUrl: 'icons<?php echo("/" . MAP_ICONPACK); ?>/id_' + pokedex_id +'.png'});
+						    pokemonIcon[i] = new questPokeIcon({iconUrl: 'icons<?php echo("/" . MAP_ICONPACK); ?>/id_' + pokedex_id +'.png'});
 						}else{
-						    pokemonIcon[i] = new raidIcon({iconUrl: 'icons/reward_type_' + reward_type + '.png'});
+						    pokemonIcon[i] = new questItemIcon({iconUrl: 'icons/quests/reward_type_' + reward_type + '.png'});
 						}
 						
 						
