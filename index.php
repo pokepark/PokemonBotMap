@@ -37,7 +37,7 @@
 			var autoLocate = <?php echo(MAP_AUTOLOCATE); ?>; 
 			var exIdentifier = '<?php echo(MAP_EX_IDENT); ?>';
 		
-			var map, tiles, darkTiles, outdoorsTiles, satelliteTiles, raids1, raids2, raids3, raids4, raids5, raidsX, gyms, gymsEX, quest;
+			var map, tiles, darkTiles, outdoorsTiles, satelliteTiles, raids1, raids2, raids3, raids4, raids5, raidsX, gyms, gymsEX, questpoke, questitem;
 			var firstLoad=true;
 			var pokemonIcon = [];
 			
@@ -74,10 +74,10 @@
 			var questPokeIcon = L.Icon.extend({
 				options: {
 					iconSize:     [32, 32],
-					iconAnchor:   [8, 8],
-					popupAnchor:  [-3, -10],
+					iconAnchor:   [24, 24],
+					popupAnchor:  [0, -0],
 					shadowUrl: 'icons/quests/pokestop.png',
-					shadowSize:   [48, 48],
+					shadowSize:   [32, 32],
 					shadowAnchor: [24, 24]
 				}
 			});
@@ -85,10 +85,10 @@
 			var questItemIcon = L.Icon.extend({
 				options: {
 					iconSize:     [32, 32],
-					iconAnchor:   [8, 8],
-					popupAnchor:  [-3, -10],
+					iconAnchor:   [24, 24],
+					popupAnchor:  [0, 0],
 					shadowUrl: 'icons/quests/pokestop.png',		
-					shadowSize:   [48, 48],
+					shadowSize:   [32, 32],
 					shadowAnchor: [24, 24]					
 				}
 			});		
@@ -103,7 +103,8 @@
 				raids4 = new L.FeatureGroup();
 				raids5 = new L.FeatureGroup();
 				raidsX = new L.FeatureGroup();
-				quest = new L.FeatureGroup();				
+				questpoke = new L.FeatureGroup();
+				questitem = new L.FeatureGroup();
 				
 				tiles = new L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 				 attribution: '<a href="http://openstreetmap.org">OpenStreetMap</a> | <a href="http://mapbox.com">Mapbox</a>',
@@ -136,7 +137,7 @@
 				map = L.map('map', {
 					center: defaultCentre, 
 					zoom: 13,
-					layers: [tiles, raids1, raids2, raids3, raids4, raids5, raidsX],
+					layers: [tiles, raidsX, raids1, raids2, raids3, raids4, raids5],
 					fullscreenControl: true
 				});
 				
@@ -161,8 +162,9 @@
 					"Level 1": raids1,
 					<?php 
 						if (MAP_SHOW_QUESTS) {
-							echo('"Quests": quest,
-								'); 
+							echo('"Quests Pokemon": questpoke,
+							        "Quests item": questitem,
+							       		'); 
 						}
 					
 						if (MAP_SHOW_GYMS) {
@@ -200,7 +202,8 @@
 				raids4.clearLayers();
 				raids5.clearLayers();
 				getRaids();
-				getQuest();
+				getQuestPoke();
+				getQuestItem();
 				timeOut=setTimeout("updateRaids()",60000);
 			}
 					
@@ -346,7 +349,7 @@
 				});
 			}
 			
-			function getQuest() {
+			function getQuestPoke() {
 			    
 			    $.getJSON("getquest.php", function (data) {
 			        
@@ -386,19 +389,29 @@
 						
 						var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ pokestop_info  + quest_info + "</div>";	
 						
-						if( pokedex_id && reward_type == 1 ){
+					if( pokedex_id && reward_type == 1 ){
+					    
 						    pokemonIcon[i] = new questPokeIcon({iconUrl: 'icons<?php echo("/" . MAP_ICONPACK); ?>/id_' + pokedex_id +'.png'});
+					var marker = new L.Marker(location, {icon: pokemonIcon[i] }, { title: name });
+						marker.bindPopup(details, {maxWidth: '400'});
+						questpoke.addLayer(marker);
+				
 						}else{
-						    pokemonIcon[i] = new questItemIcon({iconUrl: 'icons/quests/reward_type_' + reward_type + '.png'});
+						    
+					pokemonIcon[i] = new questItemIcon({iconUrl: 'icons/quests/reward_type_' + reward_type + '.png'});
+					var marker = new L.Marker(location, {icon: pokemonIcon[i] }, { title: name });
+						marker.bindPopup(details, {maxWidth: '400'});
+						questitem.addLayer(marker);
 						}
 						
 						
-						var marker = new L.Marker(location, {icon: pokemonIcon[i] }, { title: name });
-						marker.bindPopup(details, {maxWidth: '400'});
-						quest.addLayer(marker);
+
 					}
 				});
 			}
+			
+
+
 		</script>
 	</body>
 </html>
