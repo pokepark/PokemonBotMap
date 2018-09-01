@@ -12,6 +12,7 @@ define('MAP_TOKEN',		'your-map-token'); //API map token from mapbox.com
 define('MAP_CENTRE',	'48.858240, 2.294287'); //Default starting location of map.
 define('MAP_AUTOLOCATE', true); //Automatically centre map on user's location (can give error on some browsers if not forcing https)
 define('MAP_EX_IDENT',	'none'); //Do you have anything added to gym name to indicate it's an EX gym (E.g. *** or [EX]), leave as 'none' if you don't use this
+define('MAP_RAID_END_TIME_OFFSET_HOURS', '96'); //Amount of hours future raids will be displayed on the map in advance
 define('MAP_SHOW_GYMS',	 true); //Enable optional gym layers on the map to show all gyms / EX gyms (if gyms are tagged with an identifier)
 define('MAP_ICONPACK',	'numbers'); //Choose icons for the map - add folders of icons named id_x.png and set folder name here to switch icon pack
 define('LANGUAGE',  'EN'); // set the language to NL,DE,EN,PT-BR.
