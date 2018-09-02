@@ -231,8 +231,7 @@
 					var times = "<div style='font-size: 14px;" + ((remaining < 20) ? " color: red;" : "") + "'>";
 					times += (level == "X") ? "<strong>" + start_time.toLocaleDateString() + "</strong><br>" : "";
 					times += String.fromCodePoint(0x23F0) + start_time.getHours() + ":" + (start_time.getMinutes()<10?'0':'') + start_time.getMinutes() + " - " + end_time.getHours() + ":" + (end_time.getMinutes()<10?'0':'') + end_time.getMinutes();
-					
-					times += ((remaining < 45) ? " (" + remaining + "m verbleibend)</div>" : "</div>");
+					times += ((remaining < 45) ? " (" + remaining + "m left)</div>" : "</div>");
 					
 					if (level > 0) {
 						var stars = "<div style='font-size: 16px;'>";
