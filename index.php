@@ -228,8 +228,11 @@
 						gym_info += "<div style='font-size: 12px;'><a href='https://www.google.com/maps/search/?api=1&query=" + data[i].lat + "," + data[i].lon + "' target='_blank' title='Click to find " + gym_name + " on Google Maps'>" + address + "</a></div>&nbsp;<br />";
 					var pokemon = "<div style='font-size: 18px;'><strong>" + pokemon_name + "</strong></div>";
 					
-					var times = "<div style='font-size: 14px;" + ((remaining < 20) ? " color: red;" : "") + "'>" + String.fromCodePoint(0x23F0) + start_time.getHours() + ":" + (start_time.getMinutes()<10?'0':'') + start_time.getMinutes() + " - " + end_time.getHours() + ":" + (end_time.getMinutes()<10?'0':'') + end_time.getMinutes();
-						times += ((remaining < 45) ? " (" + remaining + "m left)</div>" : "</div>");
+					var times = "<div style='font-size: 14px;" + ((remaining < 20) ? " color: red;" : "") + "'>";
+					times += (level == "X") ? "<strong>" + start_time.toLocaleDateString() + "</strong><br>" : "";
+					times += String.fromCodePoint(0x23F0) + start_time.getHours() + ":" + (start_time.getMinutes()<10?'0':'') + start_time.getMinutes() + " - " + end_time.getHours() + ":" + (end_time.getMinutes()<10?'0':'') + end_time.getMinutes();
+					
+					times += ((remaining < 45) ? " (" + remaining + "m verbleibend)</div>" : "</div>");
 					
 					if (level > 0) {
 						var stars = "<div style='font-size: 16px;'>";
