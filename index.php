@@ -250,9 +250,16 @@
 						attending += "</div>";
 					}
 					
+					var raid_footer = "";
+					if (level == "X") {
+						raid_footer += "<div style='font-size: 12px;'><?php if (defined('MAP_EX_RAID_FOOTER') && !empty(MAP_EX_RAID_FOOTER)) { echo('<br>');echo(MAP_EX_RAID_FOOTER); } ?></div>";
+					} else {
+						raid_footer += "<div style='font-size: 12px;'><?php if (defined('MAP_RAID_FOOTER') && !empty(MAP_RAID_FOOTER)) { echo('<br>');echo(MAP_RAID_FOOTER); } ?></div>";
+					}
+
 					var raidID = "<div style='font-size: 10px;'><br/>[Raid ID: " + data[i].id + "]</div>";
 					
-					var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ gym_info + pokemon + stars + times + attending + raidID + "</div>";
+					var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ gym_info + pokemon + stars + times + attending + raid_footer + raidID + "</div>";
 					
 					if (level == 5) {
 						if (pokedex_id == 9995) {
@@ -331,9 +338,9 @@
 						var gym_info = "<div style='font-size: 18px; color: #0078A8;'>"+ gym_name +"</div>";
 						gym_info += "<div style='font-size: 12px;'><a href='https://www.google.com/maps/search/?api=1&query=" + data[i].lat + "," + data[i].lon + "' target='_blank' title='Click to find " + gym_name + " on Google Maps'>" + address + "</a></div>&nbsp;<br />";
 						
-						var no_raids = "<div style='font-size: 12px;'>No known raid at this gym<br/>If you can see one, please send details <br/>to <?php echo(BOT_NAME); ?> on Telegram.</div>";
+						var gym_footer = "<div style='font-size: 12px;'><?php if (defined('MAP_GYM_FOOTER') && !empty(MAP_GYM_FOOTER)) { echo(MAP_GYM_FOOTER); } ?></div>";
 						
-						var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ gym_info + no_raids + "</div>";
+						var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ gym_info + gym_footer + "</div>";
 						
 						if(exIdentifier != "none" && EX) {
 							var marker = new L.Marker(location, {icon: exGymIcon}, { title: name });
