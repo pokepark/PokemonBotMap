@@ -202,7 +202,6 @@
 				raids5.clearLayers();
 				getRaids();
 				getQuestPoke();
-				getQuestItem();
 				timeOut=setTimeout("updateRaids()",60000);
 			}
 					
