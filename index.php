@@ -18,7 +18,6 @@
 		<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
    
 		<style type="text/css">
-		<style type="text/css">
             html { height: 100% }
             body { height: 100%; margin: 0; padding: 0;}
             #map { height: 100% }
