@@ -162,7 +162,7 @@
 					<?php 
 						if (MAP_SHOW_QUESTS) {
 							echo('"Quests Pokemon": questpoke,
-							        "Quests item": questitem,
+							        "Quests Item": questitem,
 							       		'); 
 						}
 					
@@ -392,9 +392,13 @@
 						    dat_r_type  = r_type.split(':');
 						    r_type      = ( ( reward_quantity == 1 ) ? dat_r_type[0] : dat_r_type[1] );
 						
-						var quest_info = "<div style='font-size: 12px;'>"+ q_type + ' ' + quest_quantity + ' ' + q_action +"<br>"+ reward_quantity + ' ' + r_type +"		</div>";
+						var quest_info = "<div style='font-size: 14px;'>"+ q_type + ' ' + quest_quantity + ' ' + q_action +"<br>"+ reward_quantity + ' ' + r_type +"		</div>";
 						
-						var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ pokestop_info  + quest_info + "</div>";	
+						var quest_footer = "<div style='font-size: 12px;'><?php if (defined('MAP_QUEST_FOOTER') && !empty(MAP_QUEST_FOOTER)) { echo('<br>');echo(MAP_QUEST_FOOTER); } ?></div>";
+
+						var questID = "<div style='font-size: 10px;'><br/>[Quest ID: " + data['stops'][i].id + "]</div>";
+
+						var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ pokestop_info  + quest_info + quest_footer + questID + "</div>";
 						
 					if( pokedex_id && reward_type == 1 ){
 					    
