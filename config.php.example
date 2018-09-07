@@ -19,7 +19,7 @@ define('MAP_GYM_FOOTER',	    'No known raid at this gym.<br/>If you can see one,
 define('MAP_RAID_FOOTER',	    ''); //text displayed as a footer on the map when clicking on a gym with an active raid
 define('MAP_EX_RAID_FOOTER',	''); //text displayed as a footer on the map when clicking on a gym announcing an ex raid
 define('LANGUAGE',  'EN'); // set the language to NL,DE,EN,PT-BR.
-
+define('TIMEZONE',			'Europe/Berlin');
 
 //Quests - Optional settings for adding QuestBot data to your map
 define('MAP_SHOW_QUESTS', false);  //set to true to offer quest data on the map from your QuestBot.

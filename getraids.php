@@ -1,7 +1,7 @@
 <?php
 	//Use same config as bot
 	require_once("config.php");
-	
+	$tz = TIMEZONE;
 	// Establish mysql connection.
 	$db = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4", DB_USER, DB_PASSWORD);
 
@@ -10,11 +10,11 @@
 		echo("Failed to connect to Database!\n");
 		die("Connection Failed: " . $db->connect_error);
 	}
-                                                                                                                                                            
+
 	$sql = "SELECT    raids.*,
-		UNIX_TIMESTAMP(raids.end_time)							AS ts_end,
-		UNIX_TIMESTAMP(raids.start_time)						AS ts_start,
-		UNIX_TIMESTAMP(raids.end_time)-UNIX_TIMESTAMP(NOW())	AS t_left,
+		UNIX_TIMESTAMP(CONVERT_TZ(raids.end_time,'{$tz}','SYSTEM'))                        AS ts_end,
+		UNIX_TIMESTAMP(CONVERT_TZ(raids.start_time,'{$tz}','SYSTEM'))                      AS ts_start,
+		UNIX_TIMESTAMP(CONVERT_TZ(raids.end_time,'{$tz}','SYSTEM'))-UNIX_TIMESTAMP(NOW())  AS t_left,
 		pokemon.raid_level, 
 		pokemon.pokedex_id,
 		pokemon.pokemon_name,
@@ -27,11 +27,10 @@
 	FROM raids
 		LEFT JOIN pokemon ON pokemon.pokedex_id=raids.pokemon
 		LEFT JOIN attendance ON attendance.raid_id=raids.id
-	WHERE   raids.end_time > NOW()
-		AND 	raids.end_time < NOW() + INTERVAL " . MAP_RAID_END_TIME_OFFSET_HOURS . " hour
+	WHERE   CONVERT_TZ(raids.end_time,'{$tz}','SYSTEM')>NOW()
+		AND 	CONVERT_TZ(raids.end_time,'{$tz}','SYSTEM') < CONVERT_TZ(NOW(),'SYSTEM','{$tz}') + INTERVAL " . MAP_RAID_END_TIME_OFFSET_HOURS . " hour
 	GROUP BY  raids.gym_name
 	ORDER BY  raids.end_time ASC";
-
 	$result = $db->query($sql);
 	
 	if (!$result) {
