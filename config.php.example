@@ -18,6 +18,7 @@ define('MAP_ICONPACK',	'numbers'); //Choose icons for the map - add folders of i
 define('MAP_GYM_FOOTER',	    'No known raid at this gym.<br/>If you can see one, please send details <br/>to <a href=\"https://t.me/'.substr(BOT_NAME,1).'\">'.BOT_NAME.'</a> on Telegram.'); //text displayed as a footer on the map when clicking on a gym with no active raid
 define('MAP_RAID_FOOTER',	    ''); //text displayed as a footer on the map when clicking on a gym with an active raid
 define('MAP_EX_RAID_FOOTER',	''); //text displayed as a footer on the map when clicking on a gym announcing an ex raid
+define('MAP_QUEST_FOOTER',	    ''); //text displayed as a footer on the map when clicking on a quest
 define('LANGUAGE',  'EN'); // set the language to NL,DE,EN,PT-BR.
 define('TIMEZONE',			'Europe/Berlin');
 
