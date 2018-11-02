@@ -37,7 +37,7 @@
   $rows = array();
   try {
 
-    $result = $db->query($sql);
+    $result = $dbh->query($sql);
     while($stops = $result->fetch(PDO::FETCH_ASSOC)) {
 
       $rows[] = $stops;
