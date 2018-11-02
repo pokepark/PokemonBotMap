@@ -10,7 +10,7 @@
   try {
 
     $sql = "SELECT * FROM gyms";
-    $result = $db->query($sql);
+    $result = $dbh->query($sql);
     
     while($gym = $result->fetch(PDO::FETCH_ASSOC)) {
 
