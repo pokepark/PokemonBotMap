@@ -8,7 +8,9 @@
                                                                                                                                                             
   $sql = "
     SELECT    raids.*,
-        gyms.gym_name,
+      gyms.gym_name,
+      gyms.lat,
+      gyms.lon,
       UNIX_TIMESTAMP(raids.end_time) AS ts_end,
       UNIX_TIMESTAMP(raids.start_time) AS ts_start,
       UNIX_TIMESTAMP(raids.end_time)-UNIX_TIMESTAMP(NOW()) AS t_left,
