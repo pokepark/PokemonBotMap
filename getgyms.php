@@ -1,31 +1,30 @@
 <?php
-	//Use same config as bot
-	require_once("config.php");
-	
-	// Establish mysql connection.
-	$db = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4", DB_USER, DB_PASSWORD);
+  //Use same config as bot
+  require_once("config.php");
 
-	// Error connecting to db.
-	if ($db->connect_errno) {
-		echo("Failed to connect to Database!\n");
-		die("Connection Failed: " . $db->connect_error);
-	}
-                                                                                                                                                            
-	$sql = "SELECT * FROM gyms";
+  // Establish mysql connection.
+  $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4", DB_USER, DB_PASSWORD, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+  $dbh->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
 
-	$result = $db->query($sql);
-	
-	if (!$result) {
-		echo "An SQL error occured";
-		exit;
-	}
-	
-	$rows = array();
-	while($gym = $result->fetch(PDO::FETCH_ASSOC)) {
-		$rows[] = $gym;
-	}
-	
-	print json_encode($rows);
-	
-	
+  $rows = array();  
+  try {
+
+    $sql = "SELECT * FROM gyms";
+    $result = $db->query($sql);
+    
+    while($gym = $result->fetch(PDO::FETCH_ASSOC)) {
+
+      $rows[] = $gym;
+    }
+  }
+  catch (PDOException $exception) {
+
+    error_log($exception->getMessage());
+    $dbh = null;
+    exit;
+  }
+
+  print json_encode($rows);
+
+  $dbh = null;
 ?>

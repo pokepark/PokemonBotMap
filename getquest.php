@@ -1,17 +1,12 @@
 <?php
-	//Use same config as bot
-	require_once("config.php");
-	
-	// Establish mysql connection.
-	$db = new PDO("mysql:host=" . QUEST_DB_HOST . ";dbname=" . QUEST_DB_NAME . ";charset=utf8mb4", QUEST_DB_USER, QUEST_DB_PASSWORD);
+  //Use same config as bot
+  require_once("config.php");
 
-	// Error connecting to db.
-	if ($db->connect_errno) {
-		echo("Failed to connect to Database!\n");
-		die("Connection Failed: " . $db->connect_error);
-	}
+  // Establish mysql connection.
+  $dbh = new PDO("mysql:host=" . QUEST_DB_HOST . ";dbname=" . QUEST_DB_NAME . ";charset=utf8mb4", QUEST_DB_USER, QUEST_DB_PASSWORD, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+  $dbh->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
                                                                                                                                                             
-	$sql = "
+  $sql = "
     SELECT     quests.*,
                    questlist.quest_type, 
                    questlist.quest_quantity, 
@@ -19,7 +14,7 @@
                    rewardlist.reward_type, 
                    rewardlist.reward_quantity, 
                    encounterlist.pokedex_ids,
-	            pokemon.pokemon_name,                   
+                   pokemon.pokemon_name,                   
                    pokestops.pokestop_name, 
                    pokestops.lat, 
                    pokestops.lon, 
@@ -37,27 +32,31 @@
         ON          pokemon.pokedex_id=encounterlist.pokedex_ids
         WHERE      quest_date = CURDATE()
         ORDER BY   pokestops.pokestop_name
-	";
+  ";
 
-	$json           = file_get_contents(LOCATION_QUEST_REWARD_JSON);
-	$translations   = json_decode($json,true);
+  $rows = array();
+  try {
 
-	$result = $db->query($sql);
-	
-	if (!$result) {
-		echo "An SQL error occured";
-		exit;
-	}
-	
-	$rows = array();
-	while($stops = $result->fetch(PDO::FETCH_ASSOC)) {
-		$rows[] = $stops;
-	}
-	
-	$data['translations']   = $translations;
-	$data['stops']          = $rows;	
-	
-	print json_encode($data);
-	
-	
+    $result = $db->query($sql);
+    while($stops = $result->fetch(PDO::FETCH_ASSOC)) {
+
+      $rows[] = $stops;
+    }
+  }
+  catch (PDOException $exception) {
+
+    error_log($exception->getMessage());
+    $dbh = null;
+    exit;
+  }
+  
+  $json           = file_get_contents(LOCATION_QUEST_REWARD_JSON);
+  $translations   = json_decode($json,true);
+
+  $data['translations']   = $translations;
+  $data['stops']          = $rows;
+
+  print json_encode($data);
+
+  $dbh = null;
 ?>
