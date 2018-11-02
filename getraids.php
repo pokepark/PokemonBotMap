@@ -8,6 +8,7 @@
                                                                                                                                                             
   $sql = "
     SELECT    raids.*,
+        gyms.gym_name,
       UNIX_TIMESTAMP(raids.end_time) AS ts_end,
       UNIX_TIMESTAMP(raids.start_time) AS ts_start,
       UNIX_TIMESTAMP(raids.end_time)-UNIX_TIMESTAMP(NOW()) AS t_left,
@@ -23,9 +24,10 @@
     FROM raids
       LEFT JOIN pokemon ON pokemon.pokedex_id=raids.pokemon
       LEFT JOIN attendance ON attendance.raid_id=raids.id
+      LEFT JOIN gyms ON gyms.id = raids.gym_id
     WHERE raids.end_time > NOW()
       AND raids.end_time < NOW() + INTERVAL " . MAP_RAID_END_TIME_OFFSET_HOURS . " hour
-    GROUP BY  raids.gym_name
+    GROUP BY  gyms.gym_name
     ORDER BY  raids.end_time ASC";
 
   $rows = array();
