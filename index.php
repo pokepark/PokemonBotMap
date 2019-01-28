@@ -201,6 +201,8 @@
 				raids4.clearLayers();
 				raids5.clearLayers();
 				getRaids();
+				questpoke.clearLayers();
+				questitem.clearLayers();
 				getQuestPoke();
 				timeOut=setTimeout("updateRaids()",60000);
 			}
