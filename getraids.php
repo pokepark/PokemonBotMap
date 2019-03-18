@@ -11,6 +11,7 @@
       gyms.gym_name,
       gyms.lat,
       gyms.lon,
+      gyms.address,
       UNIX_TIMESTAMP(raids.end_time) AS ts_end,
       UNIX_TIMESTAMP(raids.start_time) AS ts_start,
       UNIX_TIMESTAMP(raids.end_time)-UNIX_TIMESTAMP(NOW()) AS t_left,
@@ -24,7 +25,7 @@
       SUM(CASE WHEN attendance.cancel=FALSE and attendance.raid_done=FALSE THEN attendance.extra_instinct ELSE 0 END) AS extra_instinct,
       SUM(CASE WHEN attendance.cancel=FALSE and attendance.raid_done=FALSE THEN (attendance.extra_mystic+attendance.extra_valor+attendance.extra_instinct) ELSE 0 END) AS total_extras
     FROM raids
-      LEFT JOIN pokemon ON pokemon.pokedex_id=raids.pokemon
+      LEFT JOIN pokemon ON CONCAT_WS('-',pokemon.pokedex_id,pokemon.pokemon_form)=raids.pokemon
       LEFT JOIN attendance ON attendance.raid_id=raids.id
       LEFT JOIN gyms ON gyms.id = raids.gym_id
     WHERE raids.end_time > NOW()
