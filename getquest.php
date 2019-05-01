@@ -11,6 +11,7 @@
                    questlist.quest_type, 
                    questlist.quest_quantity, 
                    questlist.quest_action,
+                   questlist.quest_pokedex_ids,
                    rewardlist.reward_type, 
                    rewardlist.reward_quantity, 
                    encounterlist.pokedex_ids,
