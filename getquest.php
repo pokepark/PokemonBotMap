@@ -60,7 +60,10 @@
   $jsonreward           = file_get_contents(LOCATION_QUEST_REWARD_JSON);
   $translationsreward   = json_decode($jsonreward,true);
   
-  $translations = array_merge($translationsaction, $translationstype, $translationsreward);
+  $jsonpokemon           = file_get_contents(LOCATION_POKEMON_JSON);
+  $translationspokemon   = json_decode($jsonpokemon,true);
+
+  $translations = array_merge($translationsaction, $translationstype, $translationsreward, $translationspokemon);
 
   $data['translations']   = $translations;
   $data['stops']          = $rows;
