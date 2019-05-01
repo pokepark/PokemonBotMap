@@ -24,7 +24,9 @@ define('LANGUAGE',  'EN'); // set the language to NL,DE,EN,PT-BR.
 
 //Quests - Optional settings for adding QuestBot data to your map
 define('MAP_SHOW_QUESTS', false);  //set to true to offer quest data on the map from your QuestBot.
-define('LOCATION_QUEST_REWARD_JSON', 'https://your-bot-url.com/questbot/quests-rewards.json'); //select the folder where the quest-reward.json is located.
+define('LOCATION_QUEST_ACTION_JSON', 'https://your-bot-url.com/questbot/lang/quest_action.json'); //select the folder where the quest-reward.json is located.
+define('LOCATION_QUEST_TYPE_JSON', 'https://your-bot-url.com/questbot/lang/quest_type.json'); //select the folder where the quest-reward.json is located.
+define('LOCATION_QUEST_REWARD_JSON', 'https://your-bot-url.com/questbot/lang/reward_type.json'); //select the folder where the quest-reward.json is located.
 
 //Database connection details for quests
 define('QUEST_DB_HOST',	 		'localhost');
