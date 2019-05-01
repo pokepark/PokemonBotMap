@@ -50,8 +50,16 @@
     exit;
   }
   
-  $json           = file_get_contents(LOCATION_QUEST_REWARD_JSON);
-  $translations   = json_decode($json,true);
+  $jsonaction           = file_get_contents(LOCATION_QUEST_ACTION_JSON);
+  $translationsaction   = json_decode($jsonaction,true);
+  
+  $jsontype           = file_get_contents(LOCATION_QUEST_TYPE_JSON);
+  $translationstype   = json_decode($jsontype,true);
+  
+  $jsonreward           = file_get_contents(LOCATION_QUEST_REWARD_JSON);
+  $translationsreward   = json_decode($jsonreward,true);
+  
+  $translations = array_merge($translationsaction, $translationstype, $translationsreward);
 
   $data['translations']   = $translations;
   $data['stops']          = $rows;
