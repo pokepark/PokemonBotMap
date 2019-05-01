@@ -12,9 +12,11 @@
       gyms.lat,
       gyms.lon,
       gyms.address,
+	  raids.start_time + INTERVAL TIMESTAMPDIFF(HOUR,UTC_TIMESTAMP(),NOW()) hour as start_timeNOW,
+	  raids.end_time + INTERVAL TIMESTAMPDIFF(HOUR,UTC_TIMESTAMP(),NOW()) hour as end_timeNOW,
       UNIX_TIMESTAMP(raids.end_time) AS ts_end,
       UNIX_TIMESTAMP(raids.start_time) AS ts_start,
-      UNIX_TIMESTAMP(raids.end_time)-UNIX_TIMESTAMP(NOW()) AS t_left,
+      UNIX_TIMESTAMP(raids.end_time)-UNIX_TIMESTAMP(UTC_TIMESTAMP()) AS t_left,
       pokemon.raid_level, 
       pokemon.pokedex_id,
       pokemon.pokemon_name,
@@ -28,8 +30,8 @@
       LEFT JOIN pokemon ON CONCAT_WS('-',pokemon.pokedex_id,pokemon.pokemon_form)=raids.pokemon
       LEFT JOIN attendance ON attendance.raid_id=raids.id
       LEFT JOIN gyms ON gyms.id = raids.gym_id
-    WHERE raids.end_time > NOW()
-      AND raids.end_time < NOW() + INTERVAL " . MAP_RAID_END_TIME_OFFSET_HOURS . " hour
+    WHERE raids.end_time > UTC_TIMESTAMP()
+      AND raids.end_time < UTC_TIMESTAMP() + INTERVAL " . MAP_RAID_END_TIME_OFFSET_HOURS . " hour
     GROUP BY  gyms.gym_name
     ORDER BY  raids.end_time ASC";
 
