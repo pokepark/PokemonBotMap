@@ -136,7 +136,7 @@
 				map = L.map('map', {
 					center: defaultCentre, 
 					zoom: 13,
-					layers: [tiles, raidsX, raids1, raids2, raids3, raids4, raids5],
+					layers: [tiles, raidsX, raids1, raids2, raids3, raids4, raids5, questpoke, questitem],
 					fullscreenControl: true
 				});
 				
@@ -328,22 +328,22 @@
 					for (var i = 0; i < data.length; i++) {
 						var location = new L.LatLng(data[i].lat, data[i].lon),
 							gym_name = data[i].gym_name,
+							ex_gym = data[i].ex_gym,
+							gym_note = data[i].gym_note,
 							address = data[i].address;
-							if(gym_name.indexOf('<?php echo(MAP_EX_IDENT); ?>') !== -1) {
-								//Is EX Gym
-								var EX=true;
-							} else { 
-								var EX=false; 
-							}
 							
 						var gym_info = "<div style='font-size: 18px; color: #0078A8;'>"+ gym_name +"</div>";
 						gym_info += "<div style='font-size: 12px;'><a href='https://www.google.com/maps/search/?api=1&query=" + data[i].lat + "," + data[i].lon + "' target='_blank' title='Click to find " + gym_name + " on Google Maps'>" + address + "</a></div>&nbsp;<br />";
 						
 						var gym_footer = "<div style='font-size: 12px;'><?php if (defined('MAP_GYM_FOOTER') && !empty(MAP_GYM_FOOTER)) { echo(MAP_GYM_FOOTER); } ?></div>";
 						
+						if(gym_note == null) {
 						var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ gym_info + gym_footer + "</div>";
+						} else {
+						var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ gym_info + gym_footer + gym_note + "</div>";    
+						}
 						
-						if(exIdentifier != "none" && EX) {
+						if(ex_gym == 1) {
 							var marker = new L.Marker(location, {icon: exGymIcon}, { title: name });
 							marker.bindPopup(details, {maxWidth: '400'});
 							gymsEX.addLayer(marker);
@@ -361,8 +361,7 @@
 			function getQuestPoke() {
 			    
 			    $.getJSON("getquest.php", function (data) {
-			        
-					for (var i = 0; i < data['stops'].length; i++) {
+                    for (var i = 0; i < data['stops'].length; i++) {
 						var location = new L.LatLng(data['stops'][i].lat, data['stops'][i].lon),
 							pokestop_name = data['stops'][i].pokestop_name,
 							pokemon_name = data['stops'][i].pokemon_name,
@@ -372,7 +371,10 @@
 							reward_id = data['stops'][i].reward_id,
 							quest_type = data['stops'][i].quest_type,
 							quest_quantity = data['stops'][i].quest_quantity,
-							quest_action = data['stops'][i].quest_action,
+                            quest_action = data['stops'][i].quest_action,
+                            quest_poketypes = data['stops'][i].quest_poketypes.split(','),
+                            quest_pokedex_ids = data['stops'][i].quest_pokedex_ids,
+                            reward_pokedex_ids = data['stops'][i].pokedex_ids,
 							reward_type = data['stops'][i].reward_type,
 							reward_quantity = data['stops'][i].reward_quantity;
 							
@@ -380,13 +382,66 @@
     							pokedex_id = pokedex_id.split(',');
     							pokedex_id = pokedex_id[0];
 							}
+
+							if( reward_pokedex_ids ){
+                                reward_pokedex_ids = reward_pokedex_ids.split(',');
+                            }
+
+							var quest_pokedex_ids_string = "",
+								quest_poketypes_string = "",
+                                reward_pokedex_ids_string = "";
+							
+							if( typeof quest_pokedex_ids == "object" ){
+								for( var b = 0; quest_pokedex_ids.length >= b; b++){
+									if( quest_pokedex_ids.length == 1 || b == 0 ){
+										quest_pokedex_ids_string += data['translations'][quest_pokedex_ids[b] - 1]
+									}else if( quest_pokedex_ids.length -1 == b ){
+										quest_pokedex_ids_string += " of " + data['translations'][quest_pokedex_ids[b] - 1];
+									}else{
+										quest_pokedex_ids_string += ", ";
+										quest_pokedex_ids_string += data['translations'][quest_pokedex_ids[b] - 1];
+									}
+								}
+							}else if( quest_pokedex_ids != "0" ) {
+                                quest_pokedex_ids_string += data['translations'][quest_pokedex_ids - 1];
+                            }
+
+                            if( typeof reward_pokedex_ids == "object" && reward_pokedex_ids != null ){
+                                for( var c = 0; reward_pokedex_ids.length >= c; c++){
+                                    if( reward_pokedex_ids[c] ){
+                                        if( reward_pokedex_ids.length == 1 || c == 0 ){
+                                            reward_pokedex_ids_string += data['translations'][reward_pokedex_ids[c] - 1]
+                                        }else if( reward_pokedex_ids.length -1 == c ){
+                                            reward_pokedex_ids_string += " of " + data['translations'][reward_pokedex_ids[c] - 1];
+                                        }else{
+                                            reward_pokedex_ids_string += ", ";
+                                            reward_pokedex_ids_string += data['translations'][reward_pokedex_ids[c] - 1];
+                                        }
+                                    }
+                                }
+                            }else if( reward_pokedex_ids != "0" ){
+                                reward_pokedex_ids_string += data['translations'][reward_pokedex_ids - 1];
+                            }
+							
+							if( typeof quest_poketypes == "object" && quest_poketypes[0] != "0" ){
+								for( a = 0; quest_poketypes.length >= a; a++){
+								    if( quest_poketypes[a] ){
+                                        if( quest_poketypes.length == 1 || a == 0 ) {
+                                            quest_poketypes_string += data['translations']["pokemon_type_" + quest_poketypes[a]].EN;
+                                        }else if( quest_poketypes.length -1 == a ){
+                                            quest_poketypes_string += " of " + data['translations']["pokemon_type_" + quest_poketypes[a]].EN;
+                                        }else{
+                                            quest_poketypes_string +=  ", " + data['translations']["pokemon_type_" + quest_poketypes[a]].EN;
+                                        }
+                                    }
+								}
+							}
 							
 						var pokestop_info = "<div style='font-size: 18px; color: #0078A8;'>"+ pokestop_name +"</div>";
-						
+
 						pokestop_info += "<div style='font-size: 12px;'><a href='https://www.google.com/maps/search/?api=1&query=" + data['stops'][i].lat + "," + data['stops'][i].lon + "' target='_blank' title='Click to find " + pokestop_name + " on Google Maps'>" + address + "</a></div>&nbsp;<br />";
-						
 						var q_type      = data['translations']['quest_type_' + quest_type].<?php echo LANGUAGE; ?>,
-						    dat_action  = data['translations']['quest_action_' + quest_action].<?php echo LANGUAGE; ?>;
+                            dat_action  = ( quest_action != "0" ? data['translations']['quest_action_' + quest_action].<?php echo LANGUAGE; ?> : '' );
 						    arr_action  = dat_action.split(':');
 						    q_action    = ( ( quest_quantity == 1 ) ? arr_action[0] : arr_action[1] );
 						    
@@ -394,11 +449,19 @@
 						    dat_r_type  = r_type.split(':');
 						    r_type      = ( ( reward_quantity == 1 ) ? dat_r_type[0] : dat_r_type[1] );
 						
-						var quest_info = "<div style='font-size: 14px;'>"+ q_type + ' ' + quest_quantity + ' ' + q_action +"<br>"+ reward_quantity + ' ' + r_type +"		</div>";
+						var quest_info = "<div style='font-size: 14px;'>Quest: "+ q_type +
+										 ' ' + quest_quantity + 
+										 ' ' + ( q_action ? q_action : 
+											 ( quest_pokedex_ids_string != "" ? quest_pokedex_ids_string :
+											 	( quest_poketypes_string != "" ? quest_poketypes_string : "" ) ) ) +
+										 "<br>Reward: "+ reward_quantity + 
+										 ' ' + r_type + 
+										 ( r_type == "Pokemon" ? " (" + reward_pokedex_ids_string + ")" : "" ) +
+										 "		</div>";
 						
 						var quest_footer = "<div style='font-size: 12px;'><?php if (defined('MAP_QUEST_FOOTER') && !empty(MAP_QUEST_FOOTER)) { echo('<br>');echo(MAP_QUEST_FOOTER); } ?></div>";
 
-						var questID = "<div style='font-size: 10px;'><br/>[Quest ID: " + data['stops'][i].id + "]</div>";
+						var questID = "<div style='font-size: 10px;'><br/>[Quest ID: " + quest_id + "]</div>";
 
 						var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ pokestop_info  + quest_info + quest_footer + questID + "</div>";
 						
