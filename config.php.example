@@ -11,7 +11,6 @@ define('SHOW_BOT_MSG',		true); //Includes a message in the raid pop-up on how to
 define('MAP_TOKEN',		'your-map-token'); //API map token from mapbox.com
 define('MAP_CENTRE',	'48.858240, 2.294287'); //Default starting location of map.
 define('MAP_AUTOLOCATE', true); //Automatically centre map on user's location (can give error on some browsers if not forcing https)
-define('MAP_EX_IDENT',	'none'); //Do you have anything added to gym name to indicate it's an EX gym (E.g. *** or [EX]), leave as 'none' if you don't use this
 define('MAP_RAID_END_TIME_OFFSET_HOURS', '96'); //Amount of hours future raids will be displayed on the map in advance
 define('MAP_SHOW_GYMS',	 true); //Enable optional gym layers on the map to show all gyms / EX gyms (if gyms are tagged with an identifier)
 define('MAP_ICONPACK',	'numbers'); //Choose icons for the map - add folders of icons named id_x.png and set folder name here to switch icon pack
@@ -28,6 +27,7 @@ define('LOCATION_QUEST_ACTION_JSON', 'https://your-bot-url.com/questbot/lang/que
 define('LOCATION_QUEST_TYPE_JSON', 'https://your-bot-url.com/questbot/lang/quest_type.json'); //select the folder where the quest-reward.json is located.
 define('LOCATION_QUEST_REWARD_JSON', 'https://your-bot-url.com/questbot/lang/reward_type.json'); //select the folder where the quest-reward.json is located.
 define('LOCATION_POKEMON_JSON', 'https://your-bot-url.com/map/core/lang/pokemon_en.json'); //select the folder where the pokemon_en.json is located. Change en to DE,EN,FR,RU
+define('LOCATION_POKETYPE_JSON', 'http://your-bot-url.com/map/quest/core/lang/pokemon_types.json'); //select the folder where the quest_type.jsonn is located.
 
 //Database connection details for quests
 define('QUEST_DB_HOST',	 		'localhost');
