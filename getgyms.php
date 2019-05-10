@@ -9,7 +9,7 @@
   $rows = array();  
   try {
 
-    $sql = "SELECT * FROM gyms";
+    $sql = "SELECT * FROM gyms WHERE show_gym = 1";
     $result = $dbh->query($sql);
     
     while($gym = $result->fetch(PDO::FETCH_ASSOC)) {
