@@ -36,7 +36,7 @@
 			var autoLocate = <?php echo(MAP_AUTOLOCATE); ?>; 
 			var exIdentifier = '<?php echo(MAP_EX_IDENT); ?>';
 		
-			var map, tiles, darkTiles, outdoorsTiles, satelliteTiles, raids1, raids2, raids3, raids4, raids5, raidsX, gyms, gymsEX, questpoke, questitem;
+			var map, tiles, darkTiles, outdoorsTiles, satelliteTiles, raids1, raids2, raids3, raids4, raids5, raidsX, gyms, gymsEX, questpoke, questitem, pokestop;
 			var firstLoad=true;
 			var pokemonIcon = [];
 			
@@ -68,6 +68,13 @@
 				iconAnchor:   [10, 17], 
 				popupAnchor:  [-3, -10],	
 				iconUrl: 'icons/gymEX.png'
+			});
+			
+			var pokestopIcon = L.icon({
+				iconSize:     [20, 20],
+				iconAnchor:   [10, 17], 
+				popupAnchor:  [-3, -10],	
+				iconUrl: 'icons/quests/pokestop.png'
 			});
 
 			var questPokeIcon = L.Icon.extend({
@@ -104,6 +111,7 @@
 				raidsX = new L.FeatureGroup();
 				questpoke = new L.FeatureGroup();
 				questitem = new L.FeatureGroup();
+				pokestop = new L.FeatureGroup();
 				
 				tiles = new L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 				 attribution: '<a href="http://openstreetmap.org">OpenStreetMap</a> | <a href="http://mapbox.com">Mapbox</a>',
@@ -163,6 +171,7 @@
 						if (MAP_SHOW_QUESTS) {
 							echo('"Quests Pokemon": questpoke,
 							        "Quests Item": questitem,
+							        "Pokestop": pokestop,
 							       		'); 
 						}
 					
@@ -193,7 +202,7 @@
 				//Clear map, get latest data and set timer to update again in 60 seconds.
 				if(firstLoad) {
 					firstLoad = false;
-					<?php if(MAP_SHOW_GYMS) { echo ('getGyms();'); } ?>
+					<?php if(MAP_SHOW_GYMS) { echo ('getGyms(); getStop();'); } ?>
 				}
 				raids1.clearLayers();
 				raids2.clearLayers();
@@ -357,6 +366,26 @@
 					}
 				});
 			}
+			
+			function getStop() {
+				$.getJSON("getpokestop.php", function (data) {
+					for (var i = 0; i < data.length; i++) {
+						var location = new L.LatLng(data[i].lat, data[i].lon),
+							pokestop_name = data[i].pokestop_name,
+							address = data[i].address;
+							
+						var pokestop_info = "<div style='font-size: 18px; color: #0078A8;'>"+ pokestop_name +"</div>";
+						pokestop_info += "<div style='font-size: 12px;'><a href='https://www.google.com/maps/search/?api=1&query=" + data[i].lat + "," + data[i].lon + "' target='_blank' title='Click to find " + pokestop_name + " on Google Maps'>" + address + "</a></div>&nbsp;<br />";
+						
+						var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ pokestop_info + "</div>";
+					
+						var marker = new L.Marker(location, {icon: pokestopIcon}, { title: name });
+							marker.bindPopup(details, {maxWidth: '400'});
+							pokestop.addLayer(marker);
+					
+					}
+				});
+			}			
 			
 			function getQuestPoke() {
 			    
