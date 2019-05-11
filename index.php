@@ -34,7 +34,6 @@
 			var defaultCentre = new L.LatLng(<?php echo(MAP_CENTRE); ?>); 
 			var mapToken = '<?php echo(MAP_TOKEN); ?>'; 
 			var autoLocate = <?php echo(MAP_AUTOLOCATE); ?>; 
-			var exIdentifier = '<?php echo(MAP_EX_IDENT); ?>';
 		
 			var map, tiles, darkTiles, outdoorsTiles, satelliteTiles, raids1, raids2, raids3, raids4, raids5, raidsX, gyms, gymsEX, questpoke, questitem, pokestop;
 			var firstLoad=true;
@@ -176,12 +175,8 @@
 						}
 					
 						if (MAP_SHOW_GYMS) {
-							if (MAP_EX_IDENT != 'none') { 
-								echo('"EX Gyms": gymsEX,
+							echo('"EX Gyms": gymsEX,
 								"Other Gyms": gyms');
-							} else {
-								echo('"Gyms": gyms'); 
-							}
 						}
 					?>
 				};
