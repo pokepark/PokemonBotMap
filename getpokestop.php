@@ -12,9 +12,9 @@
     $sql = "SELECT * FROM pokestops";
     $result = $dbh->query($sql);
     
-    while($gym = $result->fetch(PDO::FETCH_ASSOC)) {
+    while($stop = $result->fetch(PDO::FETCH_ASSOC)) {
 
-      $rows[] = $gym;
+      $rows[] = $stop;
     }
   }
   catch (PDOException $exception) {
