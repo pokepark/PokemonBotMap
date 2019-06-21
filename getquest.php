@@ -17,8 +17,6 @@
         ON         quests.reward_id = rewardlist.id
         LEFT JOIN  encounterlist
         ON         quests.quest_id = encounterlist.quest_id
-        LEFT JOIN   pokemon 
-        ON          pokemon.pokedex_id = encounterlist.pokedex_ids
         WHERE      quest_date = CURDATE()
         ORDER BY   pokestops.pokestop_name
   ";

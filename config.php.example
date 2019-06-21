@@ -13,7 +13,8 @@ define('MAP_CENTRE',	'48.858240, 2.294287'); //Default starting location of map.
 define('MAP_AUTOLOCATE', true); //Automatically centre map on user's location (can give error on some browsers if not forcing https)
 define('MAP_RAID_END_TIME_OFFSET_HOURS', '96'); //Amount of hours future raids will be displayed on the map in advance
 define('MAP_SHOW_GYMS',	 true); //Enable optional gym layers on the map to show all gyms / EX gyms (if gyms are tagged with an identifier)
-define('MAP_ICONPACK',	'numbers'); //Choose icons for the map - add folders of icons named id_x.png and set folder name here to switch icon pack
+define('MAP_ICONPACK',  'numbers'); //Choose icons for the map - add folders of icons named id.png and set folder name here to switch icon pack
+define('MAP_ICONPACK_PREFIX',  'id_'); //Choose prefix for icons - in case your icons are not named like 01.png, 02.png, etc.
 define('MAP_GYM_FOOTER',	    'No known raid at this gym.<br/>If you can see one, please send details <br/>to <a href=\"https://t.me/'.substr(BOT_NAME,1).'\" target=\"_blank\">'.BOT_NAME.'</a> on Telegram.'); //text displayed as a footer on the map when clicking on a gym with no active raid
 define('MAP_RAID_FOOTER',	    ''); //text displayed as a footer on the map when clicking on a gym with an active raid
 define('MAP_EX_RAID_FOOTER',	''); //text displayed as a footer on the map when clicking on a gym announcing an ex raid
