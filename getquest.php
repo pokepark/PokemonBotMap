@@ -17,7 +17,7 @@
         ON         quests.reward_id = rewardlist.id
         LEFT JOIN  encounterlist
         ON         quests.quest_id = encounterlist.quest_id
-        WHERE      quest_date = CURDATE()
+        WHERE      quests.quest_date > UTC_DATE() AND quests.quest_date < UTC_DATE() + INTERVAL 1 DAY
         ORDER BY   pokestops.pokestop_name
   ";
 
