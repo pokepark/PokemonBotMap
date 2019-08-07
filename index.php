@@ -26,7 +26,7 @@
             var mapToken = '<?php echo(MAP_TOKEN); ?>'; 
             var autoLocate = <?php echo(MAP_AUTOLOCATE); ?>; 
         
-            var map, tiles, darkTiles, outdoorsTiles, satelliteTiles, raids1, raids2, raids3, raids4, raids5, raidsX, gyms, gymsEX, questpoke, questitem, pokestop;
+            var map, tiles, darkTiles, outdoorsTiles, satelliteTiles, raids1, raids2, raids3, raids4, raids5, raidsX, gyms, gymsEX, questpoke, questitem, pokestop, rocketstop;
             var firstLoad=true;
             var pokemonIcon = [];
             
@@ -67,6 +67,13 @@
                 iconUrl: 'icons/quests/pokestop.png'
             });
 
+            var rocketstopIcon = L.icon({
+				iconSize:     [20, 40],
+				iconAnchor:   [10, 17], 
+				popupAnchor:  [-3, -10],	
+				iconUrl: 'icons/rocketstop.png'
+			});
+			
             var questPokeIcon = L.Icon.extend({
                 options: {
                     iconSize:     [70, 70],
@@ -102,6 +109,7 @@
                 questpoke = new L.FeatureGroup();
                 questitem = new L.FeatureGroup();
                 pokestop = new L.FeatureGroup();
+				rocketstop = new L.FeatureGroup();
                 
                 tiles = new L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
                  attribution: '<a href="http://openstreetmap.org">OpenStreetMap</a> | <a href="http://mapbox.com">Mapbox</a>',
@@ -134,7 +142,7 @@
                 map = L.map('map', {
                     center: defaultCentre, 
                     zoom: 14,
-                    layers: [tiles, raidsX, raids1, raids2, raids3, raids4, raids5, questpoke, questitem],
+                    layers: [tiles, raidsX, raids1, raids2, raids3, raids4, raids5, questpoke, questitem, rocketstop],
                     fullscreenControl: true
                 });
                 
@@ -162,6 +170,7 @@
                             echo('"Quests Pokemon": questpoke,
                                     "Quests Item": questitem,
                                     "Pokestop": pokestop,
+							        "Team Rocket": rocketstop,
                                            '); 
                         }
                     
@@ -199,6 +208,8 @@
                 questpoke.clearLayers();
                 questitem.clearLayers();
                 getQuestPoke();
+				rocketstop.clearLayers();
+				getRocketStop();
                 timeOut=setTimeout("updateRaids()",60000);
             }
                     
@@ -372,6 +383,31 @@
                     }
                 });
             }            
+
+			function getRocketStop() {
+				$.getJSON("getrocketstop.php", function (data) {
+					for (var i = 0; i < data.length; i++) {
+						var location = new L.LatLng(data[i].lat, data[i].lon),
+							pokestop_name = data[i].pokestop_name,
+							address = data[i].address,
+							comment = data[i].comment;
+							
+						
+						var pokestop_info = "<div style='font-size: 18px; color: #0078A8;'>"+ pokestop_name +"</div>";
+						pokestop_info += "<div style='font-size: 12px;'><a href='https://www.google.com/maps/search/?api=1&query=" + data[i].lat + "," + data[i].lon + "' target='_blank' title='Click to find " + pokestop_name + " on Google Maps'>" + address + "</a></div>&nbsp;<br />";
+						if( comment )
+							pokestop_info +=  "Info:" + comment;
+						
+						var details = "<div style='text-align: center; margin-left: auto; margin-right: auto;'>"+ pokestop_info + "</div>";
+					
+						var marker = new L.Marker(location, {icon: rocketstopIcon}, { title: name });
+							marker.bindPopup(details, {maxWidth: '400'});
+							rocketstop.addLayer(marker);
+					
+					}
+				});
+			}			
+
             
             function getQuestPoke() {
                 
