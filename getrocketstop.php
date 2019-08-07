@@ -1,6 +1,3 @@
-
-application/x-httpd-php getrocketstop.php ( PHP script, ASCII text )
-
 <?php
   //Use same config as bot
   require_once("config.php");
