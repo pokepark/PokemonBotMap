@@ -3,7 +3,7 @@
   require_once("config.php");
 
   // Establish mysql connection.
-  $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4", DB_USER, DB_PASSWORD, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+  $dbh = new PDO("mysql:host=" . QUEST_DB_HOST . ";dbname=" . QUEST_DB_NAME . ";charset=utf8mb4", QUEST_DB_USER, QUEST_DB_PASSWORD, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
   $dbh->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
 
   $rows = array();  
@@ -16,8 +16,6 @@ FROM       invasions
 LEFT JOIN  pokestops
 ON         invasions.pokestop_id = pokestops.id    
 WHERE invasions.end_time > UTC_TIMESTAMP()
-      AND invasions.end_time < UTC_TIMESTAMP()  + INTERVAL 1 hour
-
 
     ";
     $result = $dbh->query($sql);

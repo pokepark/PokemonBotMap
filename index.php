@@ -478,11 +478,11 @@
                                 for( a = 0; quest_poketypes.length >= a; a++){
                                     if( quest_poketypes[a] ){
                                         if( quest_poketypes.length == 1 || a == 0 ) {
-                                            quest_poketypes_string += data['translations']["pokemon_type_" + quest_poketypes[a]].EN;
+                                            quest_poketypes_string += data['translations']["pokemon_type_" + quest_poketypes[a]].<?php echo LANGUAGE; ?>;
                                         }else if( quest_poketypes.length -1 == a ){
-                                            quest_poketypes_string += " / " + data['translations']["pokemon_type_" + quest_poketypes[a]].EN;
+                                            quest_poketypes_string += " / " + data['translations']["pokemon_type_" + quest_poketypes[a]].<?php echo LANGUAGE; ?>;
                                         }else{
-                                            quest_poketypes_string +=  ", " + data['translations']["pokemon_type_" + quest_poketypes[a]].EN;
+                                            quest_poketypes_string +=  ", " + data['translations']["pokemon_type_" + quest_poketypes[a]].<?php echo LANGUAGE; ?>;
                                         }
                                     }
                                 }
