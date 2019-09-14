@@ -5,20 +5,9 @@
   // Establish mysql connection.
   $dbh = new PDO("mysql:host=" . QUEST_DB_HOST . ";dbname=" . QUEST_DB_NAME . ";charset=utf8mb4", QUEST_DB_USER, QUEST_DB_PASSWORD, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
   $dbh->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
-                                                                                                                                                            
+  
   $sql = "
-    SELECT     quests.*,
-                   questlist.quest_type, 
-                   questlist.quest_quantity, 
-                   questlist.quest_action,
-                   rewardlist.reward_type, 
-                   rewardlist.reward_quantity, 
-                   encounterlist.pokedex_ids,
-                   pokemon.pokemon_name,                   
-                   pokestops.pokestop_name, 
-                   pokestops.lat, 
-                   pokestops.lon, 
-                   pokestops.address
+    SELECT     *
         FROM       quests
         LEFT JOIN  pokestops
         ON         quests.pokestop_id = pokestops.id
@@ -28,9 +17,7 @@
         ON         quests.reward_id = rewardlist.id
         LEFT JOIN  encounterlist
         ON         quests.quest_id = encounterlist.quest_id
-        LEFT JOIN   pokemon 
-        ON          pokemon.pokedex_id=encounterlist.pokedex_ids
-        WHERE      quest_date = CURDATE()
+        WHERE      quests.quest_date > UTC_DATE() AND quests.quest_date < UTC_DATE() + INTERVAL 1 DAY
         ORDER BY   pokestops.pokestop_name
   ";
 
@@ -50,12 +37,29 @@
     exit;
   }
   
-  $json           = file_get_contents(LOCATION_QUEST_REWARD_JSON);
-  $translations   = json_decode($json,true);
+  $jsonaction           = file_get_contents(LOCATION_QUEST_ACTION_JSON);
+  $translationsaction   = json_decode($jsonaction,true);
+  
+  $jsontype           = file_get_contents(LOCATION_QUEST_TYPE_JSON);
+  $translationstype   = json_decode($jsontype,true);
+  
+  $jsonreward           = file_get_contents(LOCATION_QUEST_REWARD_JSON);
+  $translationsreward   = json_decode($jsonreward,true);
+ 
+  $jsonpokemon           = file_get_contents(LOCATION_POKEMON_JSON);
+  $translationspokemon   = json_decode($jsonpokemon,true);
+  
+  $jsonpoketype           = file_get_contents(LOCATION_POKETYPE_JSON);
+  $translationspoketype   = json_decode($jsonpoketype,true);
+  
+  $translations = array_merge($translationsaction, $translationstype, $translationsreward, $translationspokemon, $translationspoketype);
+  
+
+  
 
   $data['translations']   = $translations;
   $data['stops']          = $rows;
-
+  
   print json_encode($data);
 
   $dbh = null;
